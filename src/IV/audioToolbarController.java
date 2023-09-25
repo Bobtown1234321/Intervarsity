@@ -2,10 +2,9 @@ package IV;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ChoiceBox;
 
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Mixer;
-import javax.sound.sampled.Port;
+import javax.sound.sampled.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,11 +15,16 @@ public class audioToolbarController implements Initializable {
     private final ArrayList<Mixer> audioInput = new ArrayList<>();
     private final ArrayList<Mixer> audioOutput = new ArrayList<>();
     private final ArrayList<Mixer> others = new ArrayList<>();
+    private Mixer testMixer;
+    @FXML
+    private ChoiceBox otherLines;
 
 
     @FXML
     private void displayOtherInfo() {
+        int count = 0;
         for (Mixer mix : others) {
+            System.out.println(count++);
             System.out.println(mix.getMixerInfo().getName());
             System.out.println(Arrays.toString(mix.getSourceLineInfo()));
             System.out.println(Arrays.toString(mix.getTargetLineInfo()) + "\n");
@@ -38,11 +42,27 @@ public class audioToolbarController implements Initializable {
 
     @FXML
     private void displayOutputInfo() {
+
         for (Mixer mix : audioOutput) {
+
             System.out.println(mix.getMixerInfo().getName());
             System.out.println(Arrays.toString(mix.getSourceLines()));
             System.out.println(Arrays.toString(mix.getTargetLines()));
         }
+    }
+
+    @FXML
+    private void record() throws LineUnavailableException {
+        testMixer.open();
+        Line[] lines = testMixer.getSourceLines();
+
+
+        for (Line line : lines) {
+            System.out.println(line.getLineInfo());
+            System.out.println(Arrays.toString(line.getControls()));
+        }
+
+
     }
 
     /**
@@ -73,6 +93,7 @@ public class audioToolbarController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Mixer.Info[] mixers = AudioSystem.getMixerInfo();
         sortTypeofAudioIO(mixers);
+        testMixer = others.get(9);
     }
 }
 

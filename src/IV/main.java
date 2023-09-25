@@ -10,7 +10,7 @@ public class main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("IV/audioToolbar.fxml"));
+        loader.setLocation(getClass().getResource("audioToolbar.fxml"));
         Parent root = loader.load();
 
         Scene scene = new Scene(root);
