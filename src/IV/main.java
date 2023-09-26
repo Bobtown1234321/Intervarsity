@@ -14,9 +14,9 @@ public class main extends Application {
         Parent root = loader.load();
 
         Scene scene = new Scene(root);
+        stage.setTitle("Audio Toolbar");
         stage.setScene(scene);
         stage.setAlwaysOnTop(true);
         stage.show();
-
     }
 }

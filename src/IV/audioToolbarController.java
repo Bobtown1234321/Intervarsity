@@ -1,23 +1,33 @@
 package IV;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
 
 import javax.sound.sampled.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.ResourceBundle;
+import java.util.*;
+
 
 public class audioToolbarController implements Initializable {
 
-    private final ArrayList<Mixer> audioInput = new ArrayList<>();
-    private final ArrayList<Mixer> audioOutput = new ArrayList<>();
-    private final ArrayList<Mixer> others = new ArrayList<>();
+    private final List<Mixer> audioInput = new ArrayList<>();
+    private final List<Mixer> audioOutput = new ArrayList<>();
+    private final List<Mixer> others = new ArrayList<>();
+    private final ObservableList<String> mixerOList = FXCollections.observableArrayList();
+    private final AudioFormat analogIn = new AudioFormat(48000, 128,
+            2, false, false);
+
     private Mixer testMixer;
+    private TargetDataLine inputLine;
+    
     @FXML
-    private ChoiceBox otherLines;
+    private ChoiceBox inputLines;
+    @FXML
+    private ChoiceBox outputLines;
 
 
     @FXML
@@ -44,7 +54,6 @@ public class audioToolbarController implements Initializable {
     private void displayOutputInfo() {
 
         for (Mixer mix : audioOutput) {
-
             System.out.println(mix.getMixerInfo().getName());
             System.out.println(Arrays.toString(mix.getSourceLines()));
             System.out.println(Arrays.toString(mix.getTargetLines()));
@@ -52,17 +61,31 @@ public class audioToolbarController implements Initializable {
     }
 
     @FXML
-    private void record() throws LineUnavailableException {
-        testMixer.open();
-        Line[] lines = testMixer.getSourceLines();
+    private void testPort() throws LineUnavailableException {
+        Line inputPort = testMixer.getLine(Port.Info.MICROPHONE);
+        System.out.println(inputPort.getLineInfo());
+        DataLine.Info info = new DataLine.Info(TargetDataLine.class, analogIn);
+        System.out.println(info);
 
-
-        for (Line line : lines) {
-            System.out.println(line.getLineInfo());
-            System.out.println(Arrays.toString(line.getControls()));
+        try{
+            inputLine = (TargetDataLine) AudioSystem.getLine(info);
+            inputLine.open(analogIn);
+        } catch (LineUnavailableException e){
+            System.out.println("Line Unavailable");
+        } catch (IllegalArgumentException e){
+            System.out.println(e.getMessage());
         }
+    }
 
-
+    /**
+     * This is called when the user selects an input from the choice-box
+     * otherlines.
+     *
+     * @param e The event that was called
+     */
+    private void handleInputSel(Event e) {
+        testMixer = audioInput.get(inputLines.getSelectionModel().getSelectedIndex());
+        System.out.println(testMixer.getMixerInfo().getName());
     }
 
     /**
@@ -93,7 +116,14 @@ public class audioToolbarController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Mixer.Info[] mixers = AudioSystem.getMixerInfo();
         sortTypeofAudioIO(mixers);
-        testMixer = others.get(9);
+        mixerOList.addAll(audioInput.stream()
+                .map(e -> e.getMixerInfo().getName())
+                .toList());
+
+        inputLines.setItems(mixerOList);
+        inputLines.setValue("Select Audio Input");
+        inputLines.setOnAction(this::handleInputSel);
+
     }
 }
 

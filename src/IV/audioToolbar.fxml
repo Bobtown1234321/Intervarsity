@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+
 <VBox xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="IV.audioToolbarController">
    <children>
-      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0"
-            spacing="2.0">
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" spacing="5.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#displayInputInfo" text="Input Info"/>
-            <Button mnemonicParsing="false" onAction="#displayOutputInfo" text="Output Info"/>
-            <Button mnemonicParsing="false" onAction="#displayOtherInfo" text="Other IO Info"/>
-            <ChoiceBox fx:id="otherLines" prefWidth="150.0"/>
+            <Button mnemonicParsing="false" onAction="#displayInputInfo" text="Input Info" />
+            <Button mnemonicParsing="false" onAction="#displayOutputInfo" text="Output Info" />
+            <Button mnemonicParsing="false" onAction="#displayOtherInfo" text="Other IO Info" />
+            <ChoiceBox fx:id="inputLines" prefWidth="150.0" />
+            <ChoiceBox fx:id="outputLines" layoutX="202.0" layoutY="10.0" prefWidth="150.0" />
          </children>
       </HBox>
-      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0"
-            spacing="2.0">
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" spacing="5.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#record" text="Record"/>
-            <Button mnemonicParsing="false" text="Output Info"/>
-            <Button mnemonicParsing="false" text="Other IO Info"/>
+            <Button mnemonicParsing="false" onAction="#testPort" text="testAudioInput" />
+            <Button mnemonicParsing="false" text="Button" />
          </children>
       </HBox>
    </children>
