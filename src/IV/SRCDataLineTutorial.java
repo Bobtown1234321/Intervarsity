@@ -25,36 +25,51 @@ public class SRCDataLineTutorial {
                 @Override
                 public void run() {
                     sourceLine.start();
+                    System.out.println(out.size());
+                    System.out.println(targetLine.getBufferSize() / 5);
                     while (true) {
+                        System.out.println(sourceLine.getFramePosition());
+                        if (sourceLine.getFramePosition() == 44000) {
+                            System.exit(1);
+                        }
                         sourceLine.write(out.toByteArray(), 0, out.size());
-                    }
-                }
-            };
 
+                    }
+
+                }
+
+            };
             Thread targetThread = new Thread() {
                 @Override
                 public void run() {
                     targetLine.start();
-                    byte[] data = new byte[targetLine.getBufferSize() / 10];
+                    byte[] data = new byte[targetLine.getBufferSize() / 5];
                     int readBytes;
                     while (true) {
+                        //System.out.println(targetLine.getFramePosition());
+//                        if (targetLine.getFramePosition() == 0){
+//                            System.exit(4);
+//                        }
                         readBytes = targetLine.read(data, 0, data.length);
-
                         out.write(data, 0, readBytes);
 
                     }
                 }
             };
+
             targetThread.start();
+            System.out.println(targetThread.getState());
             System.out.println("Started");
-            Thread.sleep(10);
-            sourceThread.start();
-            Thread.sleep(50000);
+            Thread.sleep(1000);
             targetLine.stop();
             targetLine.close();
+            System.out.println(targetThread.getState());
+            sourceThread.start();
+            Thread.sleep(1000);
             sourceLine.stop();
             sourceLine.close();
             System.out.println("Stopped");
+            System.out.println(targetThread.getState());
 
         } catch (LineUnavailableException | InterruptedException e) {
             System.out.println(e.getMessage());
