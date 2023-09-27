@@ -9,7 +9,10 @@ import javafx.scene.control.ChoiceBox;
 
 import javax.sound.sampled.*;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ResourceBundle;
 
 
 public class audioToolbarController implements Initializable {
@@ -62,19 +65,20 @@ public class audioToolbarController implements Initializable {
 
     @FXML
     private void testPort() throws LineUnavailableException {
-        Line inputPort = testMixer.getLine(Port.Info.MICROPHONE);
-        System.out.println(inputPort.getLineInfo());
-        DataLine.Info info = new DataLine.Info(TargetDataLine.class, analogIn);
-        System.out.println(info);
-
-        try{
-            inputLine = (TargetDataLine) AudioSystem.getLine(info);
-            inputLine.open(analogIn);
-        } catch (LineUnavailableException e){
-            System.out.println("Line Unavailable");
-        } catch (IllegalArgumentException e){
-            System.out.println(e.getMessage());
-        }
+        Line[] inputPort = testMixer.getTargetLines();
+        System.out.println(Arrays.toString(AudioSystem.getAudioFileTypes()));
+        System.out.println(inputPort.length);
+//        DataLine.Info info = new DataLine.Info(TargetDataLine.class, analogIn);
+//        System.out.println(info);
+//
+//        try{
+//            inputLine = (TargetDataLine) AudioSystem.getLine(info);
+//            inputLine.open(analogIn);
+//        } catch (LineUnavailableException e){
+//            System.out.println("Line Unavailable");
+//        } catch (IllegalArgumentException e){
+//            System.out.println(e.getMessage());
+//        }
     }
 
     /**
@@ -84,7 +88,7 @@ public class audioToolbarController implements Initializable {
      * @param e The event that was called
      */
     private void handleInputSel(Event e) {
-        testMixer = audioInput.get(inputLines.getSelectionModel().getSelectedIndex());
+        testMixer = others.get(inputLines.getSelectionModel().getSelectedIndex());
         System.out.println(testMixer.getMixerInfo().getName());
     }
 
@@ -116,7 +120,7 @@ public class audioToolbarController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Mixer.Info[] mixers = AudioSystem.getMixerInfo();
         sortTypeofAudioIO(mixers);
-        mixerOList.addAll(audioInput.stream()
+        mixerOList.addAll(others.stream()
                 .map(e -> e.getMixerInfo().getName())
                 .toList());
 
