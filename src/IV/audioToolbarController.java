@@ -65,20 +65,7 @@ public class audioToolbarController implements Initializable {
 
     @FXML
     private void testPort() throws LineUnavailableException {
-        Line[] inputPort = testMixer.getTargetLines();
-        System.out.println(Arrays.toString(AudioSystem.getAudioFileTypes()));
-        System.out.println(inputPort.length);
-//        DataLine.Info info = new DataLine.Info(TargetDataLine.class, analogIn);
-//        System.out.println(info);
-//
-//        try{
-//            inputLine = (TargetDataLine) AudioSystem.getLine(info);
-//            inputLine.open(analogIn);
-//        } catch (LineUnavailableException e){
-//            System.out.println("Line Unavailable");
-//        } catch (IllegalArgumentException e){
-//            System.out.println(e.getMessage());
-//        }
+
     }
 
     /**

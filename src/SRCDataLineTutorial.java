@@ -15,7 +15,7 @@ public class SRCDataLineTutorial {
             info = new DataLine.Info(TargetDataLine.class, format);
             final TargetDataLine targetLine = (TargetDataLine) AudioSystem.getLine(info);
 
-            while (true) {
+
             final ByteArrayOutputStream out = new ByteArrayOutputStream();
 
                 targetLine.open();
@@ -23,13 +23,12 @@ public class SRCDataLineTutorial {
                 Thread sourceThread = new Thread() {
                     @Override
                     public void run() {
-                        sourceLine.start();
+
                         //System.out.println(out.size());
                         //System.out.println(targetLine.getBufferSize() / 5);
                         while (true) {
                             //System.out.println(sourceLine.getFramePosition());
 
-                            sourceLine.write(out.toByteArray(), 0, out.size());
 
                         }
 
@@ -40,39 +39,42 @@ public class SRCDataLineTutorial {
                     @Override
                     public void run() {
                         targetLine.start();
-                        byte[] data = new byte[targetLine.getBufferSize() / 5];
+                        sourceLine.start();
+                        byte[] data = new byte[32];
                         int readBytes;
                         while (true) {
                             readBytes = targetLine.read(data, 0, data.length);
                             out.write(data, 0, readBytes);
+                            sourceLine.write(out.toByteArray(), 0, data.length);
 
                         }
+
+
                     }
+
                 };
 
 
-                targetThread.start();
-                //System.out.println(targetThread.getState());
-                System.out.println("Started");
-                //System.out.println(sourceLine.available());
-                //System.out.println(out.size());
-                Thread.sleep(1000);
-                targetLine.stop();
-                targetLine.close();
-                System.out.println(sourceLine.available());
-                System.out.println(out.size());
-                System.out.println("Data Collected");
-                //System.out.println(targetThread.getState());
-                sourceThread.start();
-                Thread.sleep(1000);
-                sourceLine.stop();
-                sourceLine.close();
-                System.out.println("Stopped");
-                //System.out.println(targetThread.getState());
-                targetLine.drain();
-                sourceLine.drain();
-                out.reset();
-            }
+            targetThread.start();
+            //System.out.println(targetThread.getState());
+            System.out.println("Started");
+            //System.out.println(sourceLine.available());
+            //System.out.println(out.size());
+            Thread.sleep(1000000);
+
+            System.out.println(sourceLine.available());
+            System.out.println(out.size());
+            System.out.println("Data Collected");
+            //System.out.println(targetThread.getState());
+            //sourceThread.start();
+            //Thread.sleep(1000);
+            targetLine.stop();
+            sourceLine.stop();
+            targetLine.close();
+            sourceLine.close();
+            System.out.println("Stopped");
+            //System.out.println(targetThread.getState())
+
         } catch (LineUnavailableException | InterruptedException e) {
             System.out.println(e.getMessage());
         }
