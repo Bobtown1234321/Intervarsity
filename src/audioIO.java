@@ -5,11 +5,12 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 
 import javax.sound.sampled.*;
 import java.beans.EventHandler;
 //Ryan Massel
-//10/1/2023 Finished
+//10/2/2023 Finished
 
 public class audioIO extends Application {
     private static final AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100,
@@ -43,6 +44,7 @@ public class audioIO extends Application {
 
         Scene scene = new Scene(stopButton);
         stage.initStyle(StageStyle.UTILITY);
+        stage.setOnCloseRequest(this::onClose);
         stage.setTitle("AudioIO");
         stage.setScene(scene);
         stage.show();
@@ -60,11 +62,13 @@ public class audioIO extends Application {
         });
         single.start();
     }
+
+    //Restarts Audio Playback
     protected void onRestart(ActionEvent actionEvent){
         startThread();
         stopButton.setText("Stop");
     }
-
+    //Pauses Audio Playback
     protected void onStop(ActionEvent actionEvent){
         if(stopButton.getText().matches("Resume")){
             onRestart(actionEvent);
@@ -75,8 +79,14 @@ public class audioIO extends Application {
             stopButton.setText("Resume");
         }
     }
-
-    protected void onClose(ActionEvent actionEvent){
+    //When window closes ends the target and source Streams.
+    protected void onClose(WindowEvent windowEvent){
+        if(target.isActive()){
+            target.stop();
+            source.stop();
+            target.flush();
+            source.flush();
+        }
         target.close();
         source.close();
         System.out.println("Closed");
@@ -85,5 +95,4 @@ public class audioIO extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
 }
