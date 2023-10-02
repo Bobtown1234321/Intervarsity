@@ -18,7 +18,7 @@ public class audioIO extends Application {
     private static DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
     private static SourceDataLine source;
     private static TargetDataLine target;
-    private static final int BUFFER_SIZE = 5520; //smallest possible without issues
+    private static final int BUFFER_SIZE = 5520; //5520 smallest possible without issues
     private static int readBytes;
     private final Button stopButton = new Button("Stop");
 
@@ -89,7 +89,6 @@ public class audioIO extends Application {
         }
         target.close();
         source.close();
-        System.out.println("Closed");
     }
 
     public static void main(String[] args) {
