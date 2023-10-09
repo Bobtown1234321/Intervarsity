@@ -2,15 +2,16 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 import javax.sound.sampled.*;
-import java.beans.EventHandler;
+
 //Ryan Massel
 //10/2/2023 Finished
+//Takes in audio from the soundboard (Target) and outputs it via the HDMI cord(Source)
+//So the tech team can utilize the speakers already in the room.
 
 public class audioIO extends Application {
     private static final AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100,
@@ -50,6 +51,8 @@ public class audioIO extends Application {
         stage.show();
     }
 
+    //Thread running the reading from the target line and
+    //writes it to the source line.
     private void startThread(){
         byte[] data = new byte[BUFFER_SIZE / 4];
         Thread single = new Thread(() -> {
