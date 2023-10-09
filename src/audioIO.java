@@ -54,7 +54,7 @@ public class audioIO extends Application {
     //Thread running the reading from the target line and
     //writes it to the source line.
     private void startThread(){
-        byte[] data = new byte[BUFFER_SIZE / 4];
+        byte[] data = new byte[BUFFER_SIZE / 4]; //Divided by 4 to prevent blocking (Stuttering)
         Thread single = new Thread(() -> {
             target.start();
             source.start();
