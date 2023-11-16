@@ -43,6 +43,7 @@ public class audioIO extends Application {
         stopButton.setPrefSize(175,50);
         stopButton.setOnAction(this::onStop);
 
+        //Sets up and shows the Scene
         Scene scene = new Scene(stopButton);
         stage.initStyle(StageStyle.UTILITY);
         stage.setOnCloseRequest(this::onClose);
