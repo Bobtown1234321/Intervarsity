@@ -12,6 +12,9 @@ import javax.sound.sampled.*;
 //10/2/2023 Finished
 //Takes in audio from the soundboard (Target) and outputs it via the HDMI cord(Source)
 //So the tech team can utilize the speakers already in the room.
+//Uses the Java Virtual Machine version 20
+//https://www.oracle.com/java/technologies/javase/jdk20-archive-downloads.html
+
 
 public class audioIO extends Application {
     private static final AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100,
